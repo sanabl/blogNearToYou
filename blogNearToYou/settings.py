@@ -78,10 +78,12 @@ WSGI_APPLICATION = 'blogNearToYou.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'DataBase': 'blog',
-        'User':'root',
-        'Password':'root',
-        'default-character-set': 'utf8'
+        'HOST':'localhost',
+        'PORT':'3307',
+        'NAME': 'blog',
+        'USER':'root',
+        'PASSWORD':'root',
+        'DEFAULT-CHARACTER-SET': 'utf8'
 
     }
 }
@@ -127,3 +129,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'blog.User'
