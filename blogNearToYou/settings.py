@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'blogNearToYou.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'DataBase': 'blog',
+        'User':'root',
+        'Password':'root',
+        'default-character-set': 'utf8'
+
     }
 }
 
