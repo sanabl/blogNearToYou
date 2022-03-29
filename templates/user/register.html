@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{%  block main_row_class %}
+justify-content-md-center
+{% endblock %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static '/user_css/my_style.css' %}">
+{% endblock %}
+
+{% block content_outside %}
+    {% crispy user_form %}
+
+{% endblock %}
+{% block sidebar %}
+{% endblock %}

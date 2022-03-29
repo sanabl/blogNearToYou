@@ -1,0 +1,14 @@
+@import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
+
+
+*{
+    font-family: 'Droid Arabic Kufi', serif;
+
+}
+body {
+  /*min-height: 75rem;*/
+  padding-top: 5rem;
+}
+.register_form{
+    border: 1px solid red;
+}
