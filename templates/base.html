@@ -18,6 +18,7 @@
     <title>مقالات قريبة منك</title>
     <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.5.3/css/bootstrap.min.css"
           integrity="sha384-JvExCACAZcHNJEc7156QaHXTnQL3hQBixvj5RV5buE7vgnNEzzskDtx9NQ4p6BJe" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {% block extra_css %}
     {% endblock %}
 
@@ -68,7 +69,7 @@
                 {% block content_outside %}
             {% endblock %}
 
-        <div class="col-md-8">
+        <div class="col-xl-8 py-5 px-md-5">
             {% block content %}
             {% endblock %}
         </div>
@@ -106,6 +107,7 @@
 <script src="https://cdn.rtlcss.com/bootstrap/v4.5.3/js/bootstrap.bundle.min.js"
         integrity="sha384-40ix5a3dj6/qaC7tfz0Yr+p9fqWLzzAXiwxVLt9dw7UjQzGYw6rWRhFAnRapuQyK"
         crossorigin="anonymous"></script>
-
+{% block extra_js %}
+{% endblock %}
 </body>
 </html>

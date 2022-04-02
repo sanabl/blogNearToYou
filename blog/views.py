@@ -19,8 +19,8 @@ class UserController(View):
         template = 'user/register.html'
         user_form = UserForm(request.POST)
         context = {
-                'user_form': user_form,
-            }
+            'user_form': user_form,
+        }
         if user_form.is_valid():
             user = user_form.save()
             user = auth.authenticate(username=user, password=user_form.cleaned_data.get('password1'))
@@ -29,3 +29,12 @@ class UserController(View):
         else:
             return render(request, template, context)
 
+
+class BlogController(View):
+    def get(self, request, *args, **kwargs):
+        template_name = 'index.html'
+        blogs = [1,2,3,4,5]
+        context = {
+            'blogs': blogs
+        }
+        return render(request, context=context, template_name=template_name)
