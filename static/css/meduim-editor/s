@@ -1,0 +1,208 @@
+@charset "UTF-8";
+body, html {
+  background: #fff;
+  color: #333;
+  font-size: 20px;
+  line-height: 1.8em;
+  margin: 0;
+  overflow-x: hidden;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #1a1a1a;
+  line-height: 1.2em;
+  margin: 2.1em 0 0.7em;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.8em;
+}
+
+h3 {
+  font-size: 1.6em;
+}
+
+h4 {
+  font-size: 1.4em;
+}
+
+h5 {
+  font-size: 1.2em;
+}
+
+h6 {
+  font-size: 1em;
+}
+
+a {
+  color: #00B881;
+}
+
+.container {
+  max-width: 960px;
+  padding: 0 6em 3em;
+}
+
+.diagonal {
+  position: relative;
+  width: 100%;
+  background: url("https://unsplash.it/1920/1080?image=901") no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  color: #fff;
+  display: flex;
+  height: 52vh;
+  justify-content: center;
+}
+.diagonal:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+.diagonal:after {
+  content: "";
+  position: absolute;
+  right: -10px;
+  bottom: -1px;
+  border-left-color: #fff;
+  border-left-style: solid;
+  border-left-width: calc(100vw + 10px);
+  border-top: 12vw solid transparent;
+}
+.diagonal h1 {
+  color: #fff;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-top: -1em;
+}
+
+blockquote {
+  border-left: 3px solid #00CC8F;
+  color: #1a1a1a;
+  font-family: Georgia, Times, "Times New Roman", serif;
+  font-size: 1.25em;
+  font-style: italic;
+  line-height: 1.8em;
+  margin: 1.1em -4em;
+  padding: 1em 2em;
+  position: relative;
+  transition: 0.2s border ease-in-out;
+  z-index: 0;
+}
+blockquote:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -4px;
+  height: 2em;
+  background-color: #fff;
+  width: 5px;
+  margin-top: -1em;
+}
+blockquote:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -0.5em;
+  color: #00CC8F;
+  font-family: "Ionicons";
+  font-style: normal;
+  line-height: 1em;
+  text-align: center;
+  text-indent: -2px;
+  width: 1em;
+  margin-top: -0.5em;
+  transition: 0.2s all ease-in-out, 0.4s transform ease-in-out;
+}
+blockquote.format:before, blockquote.format:after {
+  display: none;
+}
+blockquote.book:after {
+  content: "";
+}
+blockquote.podcast:after {
+  content: "";
+}
+blockquote.lyrics:after {
+  content: "";
+}
+blockquote.favorite:after {
+  content: "";
+}
+blockquote:active:after {
+  transform: rotateY(360deg);
+}
+blockquote cite {
+  display: block;
+  font-size: 0.75em;
+  line-height: 1.8em;
+  margin-top: 1em;
+}
+
+@media (max-width: 1200px) {
+  body, html {
+    font-size: 18px;
+  }
+}
+@media (max-width: 980px) {
+  body, html {
+    font-size: 16px;
+  }
+
+  .container {
+    max-width: 720px;
+    padding: 0 3em 3em;
+  }
+
+  blockquote {
+    font-size: 1.1em;
+    margin: 1.1em -2em;
+  }
+}
+@media (max-width: 767px) {
+  body, html {
+    font-size: 16px;
+  }
+
+  .container {
+    padding: 0 2em 3em;
+  }
+
+  blockquote {
+    border-top: 2px solid #00CC8F;
+    border-bottom: 2px solid #00CC8F;
+    border-left: none;
+    margin: 1.5em 0;
+    padding: 1.5em 1em;
+  }
+  blockquote:before {
+    left: 50%;
+    top: 0;
+    height: 4px;
+    margin-top: -3px;
+    margin-left: -1em;
+    width: 2em;
+  }
+  blockquote:after {
+    font-size: 0.75em;
+    left: 50%;
+    top: 0;
+    margin-top: -0.5em;
+    margin-left: -0.5em;
+  }
+  blockquote cite {
+    text-align: right;
+  }
+}
