@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+<script>
+    var csrftoken = '{{ csrf_token }}';
+</script>
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/meduim-editor/demo.css' %}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.3/css/medium-editor.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/medium-editor-insert-plugin/2.5.0/css/medium-editor-insert-plugin-frontend.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/medium-editor-insert-plugin/2.5.0/css/medium-editor-insert-plugin.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/meduim-editor/themes/default.css' %}" id="medium-editor-theme">
+    <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}">
+
+{% endblock %}
+
+{% block content_outside %}
+    <div class="row justify-content-between" style="margin: auto 0; width:100%">
+            <div>
+                {% if status == 'D' %}
+                                        <div class="draft-box">
+
+                    <span>مسودة</span>
+                                        </div>
+                {% else %}
+                    <div class="published-box">
+                    <span>منشور</span></div>
+                {% endif %}
+            </div>
+            <div>
+                <button class="btn btn-primary js-PublishButton">نشر</button>
+                {% if status == 'D' %}
+                <button class="btn btn-primary js-DraftButton">حفظ مسوّدة</button>
+                {% endif %}
+            </div>
+    </div>
+    <div class="row w-100">
+                {% csrf_token %}
+        <div class="col-xl-8 " style="margin: 0 auto 0 auto">
+            <br/>
+            <div class="title " id="editable-container">
+
+                {{ title|safe }}
+            </div>
+            <div class="editable " id="editable-container">
+                {{ body|safe }}
+            </div>
+        </div>
+
+    </div>
+
+
+
+{% endblock %}
+{% block extra_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.runtime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sortable/0.9.13/jquery-sortable-min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.ui.widget@1.10.3/jquery.ui.widget.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.iframe-transport/1.0.1/jquery.iframe-transport.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.28.0/js/jquery.fileupload.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.3/js/medium-editor.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-editor-insert-plugin/2.5.0/js/medium-editor-insert-plugin.min.js"></script>
+
+    <script src="{% static 'js/meduim-editor/ame-extensions.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            editor.importSelection({{ lastPosition }})
+        })
+    </script>
+{% endblock %}
+{% block sidebar %}
+{% endblock %}

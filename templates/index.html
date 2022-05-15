@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+
+{% block content %}
+
+    <div class="row pt-md-4">
+        {% for blog in blogs.object_list %}
+
+            <div class="col-md-12">
+                <div class="blog-entry ftco-animate d-md-flex">
+                    <a href="{% url 'post-details' blog.slug %}" class="img 3" style="background-image: url({{ blog.img_url }})"></a>
+                    <div class="text text-2 pl-md-4">
+                        <h3 class="mb-2"><a href="{% url 'post-details' blog.slug %}">{{ blog.title|striptags|safe }}</a></h3>
+                        <div class="meta-wrap">
+                            <p class="meta">
+                                <span><i class="fa fa-calendar mr-2"></i>جانيوري 28, 2019</span>
+                                <span><a href="{% url 'post-details' blog.slug %}"><i
+                                        class="icon-folder-o mr-2"></i>الرحلات</a></span>
+                                <span><i class="fa fa-comment mr-2"></i>5 تعليقات</span>
+                            </p>
+                        </div>
+                        <p class="mb-4 text-truncate">{{ blog.body|striptags|safe }}</p>
+                        <label><a href="#" class="btn-custom"><span
+                                class="fa fa-angle-double-right"></span> المزيد </a></label>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+        {{ get_elided_page_range }}
+    </div><!-- END-->
+    <ul class="pagination">
+        {% if blogs.has_previous %}
+            <li class="page-item ">
+                <a class="page-link" href="/">&laquo; الأولى </a>
+            </li>
+            <li class="page-item ">
+
+                <a class="page-link" href="{% url 'post-page' blogs.previous_page_number %}" tabindex="-1">السابق</a>
+            </li>
+
+        {% endif %}
+        <li class="page-item active">
+            <a class="page-link" href="#"> الصفحة {{ blogs.number }} من {{ blogs.paginator.num_pages }}.</a>
+        </li>
+        {% if blogs.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{% url 'post-page' blogs.next_page_number %}">التالي </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="{% url 'post-page' blogs.paginator.num_pages %}">الاخير &raquo; </a>
+            </li>
+        {% endif %}
+
+    </ul>
+
+
+
+{% endblock %}
+{% block extra_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"
+            integrity="sha512-QDsjSX1mStBIAnNXx31dyvw4wVdHjonOwrkaIhpiIlzqGUCdsI62MwQtHpJF+Npy2SmSlGSROoNWQCOFpqbsOg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/3.0.0/jquery.waypoints.min.js"
+            integrity="sha512-f/gxy4xAjuGEIf/ujexcNI906CTS+kfw40QCyG/rEMKELvCIFaTOY+dfdn7M/eNsiMreG3SStjgFr9q8Me9Baw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="{% static 'js/main.js' %}"></script>
+{% endblock %}
