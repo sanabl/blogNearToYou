@@ -3,6 +3,8 @@
 
 * {
     font-family: 'Droid Arabic Kufi', serif;
+    font-size: 18px;
+    line-height: 30px;
 
 }
 
@@ -24,6 +26,7 @@ body {
     display: block;
     height: 150px;
     width: 150px;
+    margin-left: 1.5em;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
@@ -125,4 +128,52 @@ body {
 .fadeInUp {
   -webkit-animation-name: fadeInUp;
   animation-name: fadeInUp;
+}
+.dropdown-menu{
+    width:11rem;
+    min-width: 11rem;
+}
+.nav-item.dropdown{
+    direction: rtl;
+    margin: 6px 19px 6px 2rem;
+}
+#colorlib-main {
+	width: 100%;
+	float: right;
+        -moz-transition:    all .5s ease;
+    -o-transition:      all .5s ease;
+    -webkit-transition: all .5s ease;
+    -ms-transition: 		all .5s ease;
+    transition:         all .5s ease;
+
+
+}
+
+.ftco-section {
+  padding: 5em 0;
+  position: relative; }
+.ftco-no-pt {
+  padding-top: 0; }
+.ftco-no-pb {
+  padding-bottom: 0; }
+@media (min-width: 992px){
+    #colorlib-main{
+        width: 75%;
+    }
+     .ftco-section {
+      padding: 3em 0; }
+}
+.recent-post{
+    margin-bottom: 50px;
+}
+
+.recent-post .img-p{
+    display: flex;
+    padding-bottom: 10pt;
+}
+.published-box{
+    border: 1px solid greenyellow; background: forestgreen; border-radius: 1em;width: 4em;text-align: center;
+}
+.draft-box{
+    border: 1px solid rosybrown; background: red; border-radius: 1em;width: 4em;text-align: center;
 }

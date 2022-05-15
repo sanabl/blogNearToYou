@@ -1,32 +1,28 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block extra_css %}
-{#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">#}
-{% endblock %}
+
 
 
 {% block content %}
 
     <div class="row pt-md-4">
-        {% for blog in blogs %}
+        {% for blog in blogs.object_list %}
+
             <div class="col-md-12">
                 <div class="blog-entry ftco-animate d-md-flex">
-                    <a href="single.html" class="img 3"
-                       style="background-image: url('https://preview.colorlib.com/theme/libro/images/ximage_1.jpg.pagespeed.ic.4X8ysD2P6c.webp')"></a>
+                    <a href="{% url 'post-details' blog.slug %}" class="img 3" style="background-image: url({{ blog.img_url }})"></a>
                     <div class="text text-2 pl-md-4">
-                        <h3 class="mb-2"><a href="single.html">A Loving Heart is the Truest
-                            Wisdom</a></h3>
+                        <h3 class="mb-2"><a href="{% url 'post-details' blog.slug %}">{{ blog.title|striptags|safe }}</a></h3>
                         <div class="meta-wrap">
                             <p class="meta">
                                 <span><i class="fa fa-calendar mr-2"></i>جانيوري 28, 2019</span>
-                                <span><a href="single.html"><i
+                                <span><a href="{% url 'post-details' blog.slug %}"><i
                                         class="icon-folder-o mr-2"></i>الرحلات</a></span>
                                 <span><i class="fa fa-comment mr-2"></i>5 تعليقات</span>
                             </p>
                         </div>
-                        <p class="mb-4">A small river named Duden flows by their place and
-                            supplies it with the necessary regelialia.</p>
+                        <p class="mb-4 text-truncate">{{ blog.body|striptags|safe }}</p>
                         <label><a href="#" class="btn-custom"><span
                                 class="fa fa-angle-double-right"></span> المزيد </a></label>
                     </div>
@@ -34,22 +30,35 @@
             </div>
 
         {% endfor %}
+        {{ get_elided_page_range }}
     </div><!-- END-->
-    {#								<div class="row">#}
-    {#									<div class="col">#}
-    {#										<div class="block-27">#}
-    {#											<ul>#}
-    {#												<li><a href="#">&lt;</a></li>#}
-    {#												<li class="active"><span>1</span></li>#}
-    {#												<li><a href="#">2</a></li>#}
-    {#												<li><a href="#">3</a></li>#}
-    {#												<li><a href="#">4</a></li>#}
-    {#												<li><a href="#">5</a></li>#}
-    {#												<li><a href="#">&gt;</a></li>#}
-    {#											</ul>#}
-    {#										</div>#}
-    {#									</div>#}
-    {#								</div>#}
+    <ul class="pagination">
+        {% if blogs.has_previous %}
+            <li class="page-item ">
+                <a class="page-link" href="/">&laquo; الأولى </a>
+            </li>
+            <li class="page-item ">
+
+                <a class="page-link" href="{% url 'post-page' blogs.previous_page_number %}" tabindex="-1">السابق</a>
+            </li>
+
+        {% endif %}
+        <li class="page-item active">
+            <a class="page-link" href="#"> الصفحة {{ blogs.number }} من {{ blogs.paginator.num_pages }}.</a>
+        </li>
+        {% if blogs.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{% url 'post-page' blogs.next_page_number %}">التالي </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="{% url 'post-page' blogs.paginator.num_pages %}">الاخير &raquo; </a>
+            </li>
+        {% endif %}
+
+    </ul>
+
+
+
 {% endblock %}
 {% block extra_js %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"

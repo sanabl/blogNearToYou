@@ -13,19 +13,22 @@
           type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
           rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %}">
     <title>مقالات قريبة منك</title>
-    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.5.3/css/bootstrap.min.css"
-          integrity="sha384-JvExCACAZcHNJEc7156QaHXTnQL3hQBixvj5RV5buE7vgnNEzzskDtx9NQ4p6BJe" crossorigin="anonymous">
+
+<link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.5.3/css/bootstrap.min.css" integrity="sha384-JvExCACAZcHNJEc7156QaHXTnQL3hQBixvj5RV5buE7vgnNEzzskDtx9NQ4p6BJe" crossorigin="anonymous">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %}">
+
     {% block extra_css %}
     {% endblock %}
 
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="{% url 'blog' %}" style="padding-left:10px">مقالات قريبة منك</a>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top ">
+    <a class="navbar-brand" href="{% url 'blog' %}" style="padding-left:10px; color: #1b1b1b">مقالات قريبة منك</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -41,13 +44,13 @@
             </li>
         </ul>
         {% if user.is_authenticated %}
-            <ul class="nav-item dropdown" style='margin-top:6px; margin-bottom:6px; margin-right:10px;'>
+            <ul class="nav-item dropdown" style='margin-top:6px; margin-bottom:6px; margin-right:10px; direction: rtl'>
                 <a class="nav-link dropdown-toggle" style="color: black; font-size:large" data-toggle="dropdown"
-                   role="button" aria-haspopup="true" aria-expanded="false">Hello, {{ user.first_name }}</a>
+                   role="button" aria-haspopup="true" aria-expanded="false" > مرحبا {{ user.first_name }} </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item">Profile</a>
-                    <a class="dropdown-item" href="#">Create Post</a>
-                    <a class="dropdown-item" href="#">Edit Profile</a>
+                    <a class="dropdown-item">الملف الشخصي</a>
+                    <a class="dropdown-item" href="/post">إنشاء منشور</a>
+                    <a class="dropdown-item" href="#">تعديل الملف الشخصي</a>
 
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/logout">Log Out</a>
@@ -69,7 +72,7 @@
                 {% block content_outside %}
             {% endblock %}
 
-        <div class="col-xl-8 py-5 px-md-5">
+        <div class="col-xl-8 ">
             {% block content %}
             {% endblock %}
         </div>
@@ -89,9 +92,11 @@
                     <h2>اخر المقالات</h2>
                     {% for post in latestpost_list %}
                         <div class="img-p">
-                            <img style="width:100px; height:80px" src="{{ post.img.url }}">
-                            <a style="text-decoration:none; color:black" href="{% url 'blog-detail' post.slug %}">
-                                <p>{{ post.title }}</p></a>
+                        {% if post.img_url %}
+                            <img style="width:100px; height:80px" src="{{ post.img_url }}">
+                        {% endif %}
+                            <a style="text-decoration:none; color:black" href="{% url 'post-details' post.slug %}">
+                                <p>{{ post.title|striptags|safe }}</p></a>
                         </div>
                     {% endfor %}
                 </div>
@@ -99,14 +104,11 @@
         {% endblock %}
     </div>
 </main>
-<script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.rtlcss.com/bootstrap/v4.5.3/js/bootstrap.bundle.min.js"
-        integrity="sha384-40ix5a3dj6/qaC7tfz0Yr+p9fqWLzzAXiwxVLt9dw7UjQzGYw6rWRhFAnRapuQyK"
-        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.rtlcss.com/bootstrap/v4.5.3/js/bootstrap.bundle.min.js" integrity="sha384-40ix5a3dj6/qaC7tfz0Yr+p9fqWLzzAXiwxVLt9dw7UjQzGYw6rWRhFAnRapuQyK" crossorigin="anonymous"></script>
+    <script src="{% static 'js/source.js' %}" type="text/javascript"></script>
+
 {% block extra_js %}
 {% endblock %}
 </body>

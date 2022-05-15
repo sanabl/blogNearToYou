@@ -33,3 +33,4 @@
 		} , { offset: '95%' } );
 	};
 	contentWayPoint();
+

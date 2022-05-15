@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'crispy_forms',
+    'mediumeditor',
+    'rest_framework',
+    'django_extensions'
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -85,8 +88,9 @@ DATABASES = {
         'NAME': 'blog',
         'USER':'root',
         'PASSWORD':'root',
-        'DEFAULT-CHARACTER-SET': 'utf8'
-
+        'OPTIONS': {
+            'charset': 'utf8mb4'  # This is the important line
+        }
     }
 }
 
@@ -137,5 +141,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'Media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ]
+}
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'blog.User'
+ALLOW_UNICODE_SLUGS = True
+
+

@@ -5,8 +5,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
-from blog.models import User, UserProfile
+from blog.models import User, UserProfile,Post
 from django.utils.translation import gettext_lazy as _
+from mediumeditor.widgets import MediumEditorTextarea
 
 
 class UserForm(UserCreationForm):
@@ -60,3 +61,17 @@ class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
         exclude = ('User',)
+
+
+class PostForm(ModelForm):
+    class Meta:
+        model = Post
+        fields = {'body'}
+        widgets = {
+            'body': MediumEditorTextarea(),
+        }
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.helper = FormHelper()
+    #     self.helper.layout = Layout(
+    #         Row('body', css_class='sdfsdfsd'))
