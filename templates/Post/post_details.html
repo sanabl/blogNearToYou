@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/meduim-editor/demo.css' %}">
+
+
+{% endblock %}
+{% block content %}
+    <br/>
+
+    <div class="row title">
+        <div class="col-md-10">{{ object.title|safe }}</div>
+        <div class="col-md-2">
+            <div class="dropdown rtl">
+                <button class="btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown">
+                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'post-edit' object.slug %}">تعديل</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">حذف</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="editable ">
+        {{ object.body|safe }}
+    </div>
+
+
+{% endblock %}
