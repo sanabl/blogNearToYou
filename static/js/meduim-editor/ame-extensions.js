@@ -2,7 +2,6 @@
  * Created by sadra on 5/6/17.
  */
 
-let path = window.location.pathname.split('/');
 var insertImageExtension = MediumEditor.Extension.extend({
     name: 'insertImage',
 

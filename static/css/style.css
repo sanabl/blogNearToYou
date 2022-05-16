@@ -174,10 +174,20 @@ body {
 .published-box{
     border: 1px solid greenyellow; background: forestgreen; border-radius: 1em;width: 4em;text-align: center;
 }
-.draft-box{
-    border: 1px solid rosybrown; background: red; border-radius: 1em;width: 4em;text-align: center;
+.draft-box {
+    border: 1px solid rosybrown;
+    background: red;
+    border-radius: 1em;
+    width: 4em;
+    text-align: center;
 }
-.navbar .dropdown-menu.show {
-    min-width: inherit;
-    display: inline-block;
+.dropdown-menu {
+width: 100%;
+}
+.dropdown-menu  a {
+padding: 0.5em;
+}
+
+.row.title .dropdown-toggle::after {
+    display:none;
 }

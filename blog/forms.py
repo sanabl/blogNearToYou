@@ -60,7 +60,7 @@ class UserForm(UserCreationForm):
 class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
-        exclude = ('User',)
+        exclude = ('user',)
 
 
 class PostForm(ModelForm):

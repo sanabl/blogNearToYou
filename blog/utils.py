@@ -13,3 +13,9 @@ def get_first_image_url_in_html(html):
             return img['src']
 def rand_slug():
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
+
+
+def can_manage_post(user, post):
+    if post.user == user:
+        return True
+    return False

@@ -11,23 +11,35 @@
 
     <div class="row title">
         <div class="col-md-10">{{ object.title|safe }}</div>
-        <div class="col-md-2">
-            <div class="dropdown rtl">
-                <button class="btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown">
-                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                </button>
+        {% if object.user == user %}
+            <div class="col-md-2">
+                <div class=" dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false"> <i
+                            class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="{% url 'post-edit' object.slug %}">تعديل</a>
+                        <a class="dropdown-item delete-post" href="#">حذف</a>
+                    </div>
+                </div>
 
-                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'post-edit' object.slug %}">تعديل</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">حذف</a></li>
-                </ul>
+
             </div>
-
-        </div>
-
+        {% endif %}
     </div>
     <div class="editable ">
         {{ object.body|safe }}
+    </div>
+
+    <div class="about-author d-flex p-4 bg-light">
+        <div class="bio mr-5">
+            <img src="images/person_1.jpg" alt="Image placeholder" class="img-fluid mb-4">
+        </div>
+        <div class="desc">
+            <h3>{{ object.user.first_name }} {{ object.user.last_name }}</h3>
+            <p>{{ object.user.userprofile.bio }}</p>
+        </div>
     </div>
 
 

@@ -22,8 +22,8 @@ class User(AbstractUser):
 
 class UserProfile(MBaseModel):
     nickname = models.CharField(max_length=30)
-    User = models.OneToOneField(User, on_delete=models.CASCADE)
-
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField()
 
 class Post(MBaseModel):
     title = models.CharField(max_length=60)

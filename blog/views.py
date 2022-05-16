@@ -19,6 +19,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from pathlib import Path
 
+from blog.utils import can_manage_post
+
 
 def get_base_context(request):
     return {'user': request.user,
@@ -57,7 +59,7 @@ class BlogController(View):
 
     def get(self, request, *args, **kwargs):
         template_name = 'index.html'
-        paginator = Paginator(self.post_component.get_posts(), 3)
+        paginator = Paginator(self.post_component.get_posts(), 5)
         context = get_base_context(request)
         page_number = kwargs.get('page', 1)
         blogs = paginator.get_page(page_number)
@@ -162,6 +164,8 @@ class PostsViewSet(AuthenticatedViewSet):
         serializer.is_valid(raise_exception=True)
         new_post = serializer.validated_data
         post = self.post_component.get_draft_post(current_user.id)
+        if not can_manage_post(current_user, post):
+            return Response(status=status.HTTP_403_FORBIDDEN)
         serializer.update(post, new_post)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -169,8 +173,17 @@ class PostsViewSet(AuthenticatedViewSet):
         current_user = request.user
         slug = kwargs.get('pk')
         post = self.post_component.get_published_post(slug)
+        if not can_manage_post(current_user, post):
+            return Response(status=status.HTTP_403_FORBIDDEN)
         serializer = PostSerializer(post, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save(user=current_user)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    def destroy(self, request, *args, **kwargs):
+        slug = kwargs.get('pk')
+        post = self.post_component.get_published_post(slug)
+        if not can_manage_post(request.user, post):
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        super().perform_destroy(post)
+        return Response(status=status.HTTP_204_NO_CONTENT)
