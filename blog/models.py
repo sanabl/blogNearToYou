@@ -2,8 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
-from django_extensions.db.fields import AutoSlugField
-
 from blog.constant import PostStatus
 from blog.utils import rand_slug, get_first_image_url_in_html
 
@@ -51,3 +49,9 @@ class Photo(MBaseModel):
 
     def __str__(self):
         return self.file.name
+
+
+class Comment(MBaseModel):
+    text = models.TextField()
+    user = models.ForeignKey(User, null=True, blank=False, on_delete=models.DO_NOTHING)
+    post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.DO_NOTHING)
