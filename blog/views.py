@@ -1,6 +1,7 @@
 from django.contrib import auth
 from django.contrib.auth import login
 from django.core.paginator import Paginator
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import DetailView
@@ -8,12 +9,11 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 
 from blog import models
-from blog.base_view import AuthenticatedViewSet
+from blog.base_view import AuthenticatedViewSet, PublicViewSet
 from blog.component import PostComponent
-from blog.constant import PostStatus
-from blog.forms import UserForm, PostForm
+from blog.forms import UserForm
 from blog.models import Photo, User, Post
-from blog.serializer import PhotoSerializer, PostSerializer
+from blog.serializer import PhotoSerializer, PostSerializer, CommentSerializer
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
@@ -79,11 +79,14 @@ class PostDetails(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['comments'] = self.object.comments.filter(parent=None).order_by('-created').all()
+        context['comments_count'] = self.object.comments.count()
         context.update(get_base_context(self.request))
         return context
 
 
 class PostController(View):
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.post_component = PostComponent()
@@ -107,7 +110,6 @@ class PostController(View):
             'status': post.status,
         })
         return render(request, template, context)
-
 
 class PhotoViewSet(viewsets.ModelViewSet):
     queryset = models.Photo.objects.all()
@@ -187,3 +189,35 @@ class PostsViewSet(AuthenticatedViewSet):
             return Response(status=status.HTTP_403_FORBIDDEN)
         super().perform_destroy(post)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CommentViewSet(PublicViewSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.post_component = PostComponent()
+
+    queryset = models.Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def create(self, request, *args, **kwargs):
+        current_user = User.objects.filter(email='sanabeltahon98@gmail.com').first()
+        if request.user:
+            login(request, current_user)
+        data = request.data
+        slug = data.get('post', {}).get('slug')
+        if not slug:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        post = self.post_component.get_published_post(slug)
+        if not post:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        data['post'] = post.id
+        user_id = data.get('user')
+        if request.user and request.user.id != user_id:
+            return Response(status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
