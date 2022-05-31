@@ -6,41 +6,157 @@
 
 
 {% endblock %}
-{% block content %}
-    <br/>
+{% block content_outside %}
+    {{ request.user.id|json_script:"user_id" }}
 
-    <div class="row title">
-        <div class="col-md-10">{{ object.title|safe }}</div>
-        {% if object.user == user %}
-            <div class="col-md-2">
-                <div class=" dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown"
-                       role="button" aria-haspopup="true" aria-expanded="false"> <i
-                            class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="{% url 'post-edit' object.slug %}">تعديل</a>
-                        <a class="dropdown-item delete-post" href="#">حذف</a>
+
+    <div class="col-xl-8 " style="margin: 0 auto 0 auto">
+        <br/>
+        <div class="row title ">
+
+            <div class="col-md-11">{{ object.title|safe }}</div>
+            {% if object.user == user %}
+                <div class="col-md-1">
+                    <div class=" dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown"
+                           role="button" aria-haspopup="true" aria-expanded="false"> <i
+                                class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="{% url 'post-edit' object.slug %}">تعديل</a>
+                            <a class="dropdown-item delete-post" href="#">حذف</a>
+                        </div>
                     </div>
+
+
                 </div>
-
-
+            {% endif %}
+        </div>
+        <div class="col-md-11">
+            {{ object.body|safe }}
+        </div>
+        <div class="row">
+            <div class="about-author d-flex p-4 bg-light w-100">
+                <div class="bio mr-5">
+                    <img src="{{ object.user.img }}" alt="{{ object.user.first_name }}" class="img-fluid mb-4">
+                </div>
+                <div class="desc">
+                    <h3>{{ object.user.first_name }} {{ object.user.last_name }}</h3>
+                    <p>{{ object.user.userprofile.bio }}</p>
+                </div>
             </div>
-        {% endif %}
-    </div>
-    <div class="editable ">
-        {{ object.body|safe }}
-    </div>
+        <div class="pt-5 mt-5">
+        <div class="comment-form-wrap pt-5">
+                <h3 class="mb-5">اترك لنا تعليقا </h3>
+                <ul class="comment-list main-replay">
+                    <li class="comment">
+                        <div class="vcard bio">
+                            {% if user %}
+                                {% if user.profile.img %}
+                                    <img src="{{ user.profile.img }}" alt="{{ user.first_name }} تعليق ">
+                                {% else %}
+                                    <div id="profileImage">
+                                        {{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</div>
 
-    <div class="about-author d-flex p-4 bg-light">
-        <div class="bio mr-5">
-            <img src="images/person_1.jpg" alt="Image placeholder" class="img-fluid mb-4">
+                                {% endif %}
+                            {% else %}
+                                <img src="http://localhost:8000/Media/comment.png"
+                                     alt="{{ user.first_name }} تعليق ">
+                            {% endif %}                    </div>
+                        <div class="comment-body">
+                        <textarea onkeyup="textAreaAdjust(this)"
+                                  style="overflow:hidden; border-radius: 12px; max-width: 20em; width:100%"></textarea>
+                            <br/>
+                            <p class="mt-2"><a class="reply main">رد..</a></p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <h3 class="mb-5 font-weight-bold">{{ comments_count }}
+                {% if comments_count >= 3 %}
+                    تعليقات
+                {% elif comments_count == 1 or comments_count == 0 %}
+                    تعليق
+                {% elif comments_count == 2 %}
+                    تعليقان
+                {% endif %}
+            </h3>
+            <ul class="comment-list main-comment">
+                {% for comment in comments %}
+                    <li class="comment" id="comment_{{ comment.id }}">
+                        <div class="vcard bio">
+                            {% if comment.user %}
+                                {% if comment.user.profile.img %}
+                                    <img src="{{ comment.user.profile.img }}"
+                                         alt="{{ comment.user.first_name }} تعليق ">
+                                {% else %}
+                                    <div id="profileImage">
+                                        {{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</div>
+
+                                {% endif %}
+                            {% else %}
+                                <img src="http://localhost:8000/Media/comment.png"
+                                     alt="{{ comment.user.first_name }} تعليق ">
+                            {% endif %}
+                        </div>
+                        <div class="comment-body">
+                            {% if comment.user %}
+                                <h3>{{ comment.user.first_name }} {{ comment.user.last_name }}</h3>
+                            {% else %}
+                                <h4>مستخدم مجهول</h4>
+                            {% endif %}
+
+                            <div class="meta">{{ comment.updated }}</div>
+                            <p>{{ comment.text }}</p>
+                            <p><a class="reply main-comment" id="replay_{{ comment.id }}"
+                                  onclick="replay(this)">رد..</a>
+                            </p>
+                        </div>
+                    </li>
+
+                    <ul class="children" id="child_{{ comment.id }}">
+                        {% for child in comment.children.all %}
+                            <li class="comment" id="comment_{{ child.id }}">
+                                <div class="vcard bio">
+                                    {% if comment.user %}
+                                        {% if comment.user.profile.img %}
+                                            <img src="{{ comment.user.profile.img }}"
+                                                 alt="{{ comment.user.first_name }} تعليق ">
+                                        {% else %}
+                                            <div id="profileImage">
+                                                {{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</div>
+
+                                        {% endif %}
+                                    {% else %}
+                                        <img src="http://localhost:8000/Media/comment.png"
+                                             alt="{{ child.user.first_name }} تعليق ">
+                                    {% endif %}
+                                </div>
+                                <div class="comment-body child">
+                                    {% if comment.user %}
+                                        <h3>{{ child.user.first_name }} {{ child.user.last_name }}</h3>
+                                    {% else %}
+                                        <h4>مستخدم مجهول</h4>
+                                    {% endif %}
+                                    <div class="meta">{{ child.updated }}</div>
+                                    <p>{{ child.text }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </ul>
+
         </div>
-        <div class="desc">
-            <h3>{{ object.user.first_name }} {{ object.user.last_name }}</h3>
-            <p>{{ object.user.userprofile.bio }}</p>
+
         </div>
+
     </div>
 
 
+
+
+
+{% endblock %}
+{% block sidebar %}
 {% endblock %}

@@ -1,12 +1,13 @@
 from django.urls import path, include
 from rest_framework import routers
-from blog.views import UserController, PostController, PostDetails, BlogController, PhotoViewSet, remove_image, PostsViewSet
+from blog.views import UserController, PostController, PostDetails, BlogController, PhotoViewSet, remove_image, PostsViewSet, CommentViewSet
 from django.conf.urls.static import static
 from django.conf import settings
 
 router = routers.DefaultRouter()
 router.register(r'photos', PhotoViewSet)
 router.register(r'posts', PostsViewSet)
+router.register(r'comment', CommentViewSet)
 urlpatterns = [
     path('register/', UserController.as_view()),
     path('', BlogController.as_view(), name='blog'),
