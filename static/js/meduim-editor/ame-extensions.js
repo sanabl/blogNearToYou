@@ -150,12 +150,14 @@ function get_post_data() {
 }
 function save_post(post_date){
     let crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    let url = `/api/v1/posts/`
     let id =null;
     if(path.length >=3){
         id = path[path.length-1]
+        url += id+'/';
     }
     $.ajax({
-            url: `/api/v1/posts/${id??''}/`,
+            url: url,
             type: id?'PUT':"POST",
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Content-Type", "application/json");

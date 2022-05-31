@@ -20,8 +20,10 @@ class User(AbstractUser):
 
 class UserProfile(MBaseModel):
     nickname = models.CharField(max_length=30)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField()
+    img = models.CharField(blank=True, null=True, max_length=500)
+
 
 class Post(MBaseModel):
     title = models.CharField(max_length=60)
@@ -30,7 +32,6 @@ class Post(MBaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=1, choices=PostStatus.choices, default=PostStatus.Draft)
     slug = models.SlugField(blank=False, null=False, unique=True,allow_unicode=True)
-
     def __unicode__(self):
         return u'%s'%(self.body)
 
@@ -54,4 +55,5 @@ class Photo(MBaseModel):
 class Comment(MBaseModel):
     text = models.TextField()
     user = models.ForeignKey(User, null=True, blank=False, on_delete=models.DO_NOTHING)
-    post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.DO_NOTHING)
+    post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.DO_NOTHING, related_name='comments')
+    parent = models.ForeignKey('Comment', null=True, on_delete=models.DO_NOTHING, related_name='children')

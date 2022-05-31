@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from django.db.models import Q
+
 from blog.constant import PostStatus
 from blog.models import Post
 from blog.utils import get_first_image_url_in_html
@@ -24,3 +26,8 @@ class PostComponent:
 
     def get_post(self, slug):
         pass
+
+    def delete_post(self, post):
+        post.comments.filter(~Q(parent=None)).all().delete()
+        post.comments.all().delete()
+        post.delete()
